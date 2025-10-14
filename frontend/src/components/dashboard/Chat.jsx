@@ -9,7 +9,15 @@ import toast from 'react-hot-toast';
 import io from 'socket.io-client'
 import {FaList} from 'react-icons/fa'
 
-const socket = io('http://localhost:5000')
+// Auto-detect socket URL
+const getSocketURL = () => {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:5001'
+    }
+    return `http://${window.location.hostname}:5001`
+}
+
+const socket = io(getSocketURL())
 
 const Chat = () => {
 
