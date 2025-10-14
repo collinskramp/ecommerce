@@ -76,7 +76,7 @@ The project includes an `ecosystem.config.js` file for PM2 process management:
 ### Environment Variables
 Edit `backend/.env` with your credentials:
 ```env
-DB_URL=mongodb://admin:password@localhost:27017/ec?authSource=admin
+DB_URL=mongodb://localhost:27017/ec
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET=your_stripe_secret_key
 CLOUDINARY_CLOUD_NAME=your_cloudinary_name
@@ -86,9 +86,8 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 ### MongoDB Setup
 - **Database:** ec
-- **Username:** admin
-- **Password:** password
-- **Auth Database:** admin
+- **Authentication:** Disabled (for simplified development setup)
+- **Connection:** Direct connection without credentials
 
 ## 🔧 Troubleshooting
 

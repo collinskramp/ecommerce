@@ -10,7 +10,7 @@
 const { execSync } = require('child_process');
 
 // MongoDB connection details
-const MONGO_CMD = 'mongosh ec --authenticationDatabase admin -u admin -p password --quiet';
+const MONGO_CMD = 'mongosh ec --quiet';
 
 // Helper function to run MongoDB commands
 function runMongoCommand(script) {
@@ -321,8 +321,8 @@ function main() {
     if (!testConnection()) {
         console.log('❌ Cannot connect to MongoDB. Please ensure:');
         console.log('   - MongoDB is running: sudo systemctl status mongod');
-        console.log('   - Admin user exists with credentials: admin/password');
         console.log('   - Database "ec" is accessible');
+        console.log('   - MongoDB is running without authentication enabled');
         process.exit(1);
     }
     
