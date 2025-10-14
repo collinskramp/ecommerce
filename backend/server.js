@@ -9,7 +9,26 @@ const socket = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 app.use(cors({
-    origin : ['http://localhost:3000','http://localhost:3001'],
+    origin : function (origin, callback) {
+        // Allow requests with no origin (mobile apps, postman, etc.)
+        if (!origin) return callback(null, true);
+        
+        // Allow localhost and your server IP
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:3001', 
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:3001',
+            'http://35.181.65.176:3000',
+            'http://35.181.65.176:3001'
+        ];
+        
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        
+        callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }))
 
