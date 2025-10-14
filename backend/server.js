@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -154,6 +155,6 @@ app.use('/api',require('./routes/paymentRoutes'))
 app.use('/api',require('./routes/dashboard/dashboardRoutes'))
 
 app.get('/',(req,res) => res.send('Hello Server'))
-const port = process.env.PORT
+const port = process.env.PORT || 5001
 dbConnect()
 server.listen(port, () => console.log(`Server is running on port ${port}`))
