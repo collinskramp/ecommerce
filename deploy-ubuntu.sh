@@ -33,7 +33,33 @@ print_error() {
 check_root() {
     if [[ $EUID -eq 0 ]]; then
         print_error "This script should not be run as root. Please run as a regular user with sudo privileges."
+        print_status "Try running: su - ubuntu && ./deploy-ubuntu.sh"
         exit 1
+    fi
+}
+
+# Check directory permissions and suggest better location
+check_directory() {
+    print_status "Checking current directory: $(pwd)"
+    
+    # Check if current directory is writable
+    if [[ ! -w "." ]]; then
+        print_warning "Current directory is not writable!"
+        print_status "Recommended: Move to your home directory"
+        print_status "Run: cd ~ && ./deploy-ubuntu.sh"
+        
+        # Ask user if they want to continue
+        print_status "Do you want to automatically move to home directory? (y/n)"
+        read -r AUTO_MOVE
+        if [[ $AUTO_MOVE =~ ^[Yy]$ ]]; then
+            cd ~
+            print_success "Moved to home directory: $(pwd)"
+        else
+            print_error "Please run the script from a directory where you have write permissions."
+            exit 1
+        fi
+    else
+        print_success "Directory is writable: $(pwd)"
     fi
 }
 
@@ -172,14 +198,28 @@ setup_mongodb() {
 clone_repository() {
     print_status "Cloning repository..."
     
+    # Check if we're in a directory we can write to
+    if [[ ! -w "." ]]; then
+        print_warning "Current directory is not writable. Moving to home directory..."
+        cd ~
+        print_status "Changed to: $(pwd)"
+    fi
+    
     if [[ -d "ecommerce" ]]; then
         print_warning "Repository directory already exists. Pulling latest changes..."
         cd ecommerce
-        git pull origin main
+        git pull origin main || {
+            print_warning "Failed to pull changes. Repository might be dirty. Continuing..."
+        }
         cd ..
     else
-        git clone https://github.com/collinskramp/ecommerce.git
-        print_success "Repository cloned"
+        git clone https://github.com/collinskramp/ecommerce.git || {
+            print_error "Failed to clone repository. Check permissions and network connectivity."
+            print_status "Current directory: $(pwd)"
+            print_status "Directory permissions: $(ls -la . | head -1)"
+            exit 1
+        }
+        print_success "Repository cloned to: $(pwd)/ecommerce"
     fi
 }
 
@@ -392,6 +432,7 @@ main() {
     echo ""
     
     check_root
+    check_directory
     check_ubuntu
     update_system
     install_git
