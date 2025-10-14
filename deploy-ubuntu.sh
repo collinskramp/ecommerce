@@ -535,20 +535,6 @@ populate_database() {
         print_status "Populating database with comprehensive demo data..."
         cd ecommerce
         
-        # Install required dependencies for the populate script
-        print_status "Installing MongoDB client dependencies..."
-        if [[ ! -f "package.json" ]]; then
-            npm init -y > /dev/null 2>&1
-        fi
-        
-        # Install required packages
-        npm install mongodb bcrypt > /dev/null 2>&1 || {
-            print_warning "Failed to install dependencies, trying with backend dependencies..."
-            cd backend
-            npm install mongodb bcrypt > /dev/null 2>&1 || true
-            cd ..
-        }
-        
         # Make script executable
         chmod +x populate_database.js
         

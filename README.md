@@ -71,6 +71,12 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ### Port Conflicts
 The deployment script automatically uses port 3002 for the frontend to avoid common port conflicts on port 3000.
 
+### Node.js Dependency Conflicts (Ubuntu 22.04+)
+If you encounter Node.js or MongoDB dependency issues:
+```bash
+./fix-nodejs.sh
+```
+
 ### PM2 Management
 ```bash
 # View logs
