@@ -101,6 +101,60 @@ If you encounter Node.js or MongoDB dependency issues:
 ./fix-nodejs.sh
 ```
 
+### MongoDB Authentication Issues
+If you get "Authentication failed" errors when running `populate_database.js`:
+
+1. **Check if admin user exists:**
+   ```bash
+   mongosh --eval "use admin; db.getUsers()"
+   ```
+
+2. **Create admin user if missing:**
+   ```bash
+   mongosh --eval "
+   use admin
+   db.createUser({
+     user: 'admin',
+     pwd: 'password',
+     roles: [
+       { role: 'userAdminAnyDatabase', db: 'admin' },
+       { role: 'readWriteAnyDatabase', db: 'admin' },
+       { role: 'dbAdminAnyDatabase', db: 'admin' }
+     ]
+   })
+   "
+   ```
+
+3. **Test authentication:**
+   ```bash
+   mongosh ec --authenticationDatabase admin -u admin -p password --eval "db.runCommand({ping: 1})"
+   ```
+
+4. **Quick MongoDB setup script:**
+   ```bash
+   # Create and run MongoDB setup script
+   cat > setup-mongodb.sh << 'EOF'
+   #!/bin/bash
+   echo "Setting up MongoDB admin user..."
+   mongosh --eval "
+   use admin
+   db.dropUser('admin')
+   db.createUser({
+     user: 'admin',
+     pwd: 'password',
+     roles: [
+       { role: 'userAdminAnyDatabase', db: 'admin' },
+       { role: 'readWriteAnyDatabase', db: 'admin' },
+       { role: 'dbAdminAnyDatabase', db: 'admin' }
+     ]
+   })
+   print('Admin user created successfully')
+   "
+   EOF
+   chmod +x setup-mongodb.sh
+   ./setup-mongodb.sh
+   ```
+
 ### PM2 Management
 ```bash
 # Using the PM2 management script (recommended)
