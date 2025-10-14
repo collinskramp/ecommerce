@@ -12,6 +12,21 @@ wget https://raw.githubusercontent.com/collinskramp/ecommerce/main/deploy-ubuntu
 ./dev.sh
 ```
 
+### PM2 Process Management
+```bash
+# Start all services
+./pm2.sh start
+
+# Restart services
+./pm2.sh restart
+
+# Check status
+./pm2.sh status
+
+# View logs
+./pm2.sh logs
+```
+
 ## 📊 Application URLs
 
 ### Production (Ubuntu)
@@ -49,6 +64,15 @@ wget https://raw.githubusercontent.com/collinskramp/ecommerce/main/deploy-ubuntu
 
 ## ⚙️ Configuration
 
+### PM2 Ecosystem Configuration
+The project includes an `ecosystem.config.js` file for PM2 process management:
+- **Backend:** Node.js server (Port 5001)
+- **Frontend:** React development server (Port 3000)
+- **Dashboard:** React development server (Port 3001)
+- **Logging:** Centralized logs in `./logs/` directory
+- **Auto-restart:** Enabled for all services
+- **Memory limits:** 1GB per service
+
 ### Environment Variables
 Edit `backend/.env` with your credentials:
 ```env
@@ -79,17 +103,26 @@ If you encounter Node.js or MongoDB dependency issues:
 
 ### PM2 Management
 ```bash
-# View logs
-pm2 logs
+# Using the PM2 management script (recommended)
+./pm2.sh start           # Start all services
+./pm2.sh restart         # Restart all services
+./pm2.sh stop            # Stop all services
+./pm2.sh status          # Show status
+./pm2.sh logs            # View all logs
+./pm2.sh logs frontend   # View specific service logs
 
-# Restart all services
-pm2 restart all
+# Start specific services
+./pm2.sh start frontend
+./pm2.sh restart backend
+./pm2.sh stop dashboard
 
-# Stop all services
-pm2 stop all
-
-# Check status
-pm2 status
+# Traditional PM2 commands
+pm2 start ecosystem.config.js    # Start all services
+pm2 restart all                  # Restart all services
+pm2 stop all                     # Stop all services
+pm2 status                       # Check status
+pm2 logs                         # View logs
+pm2 monit                        # Monitor services
 ```
 
 ### MongoDB Issues
