@@ -17,7 +17,7 @@ fi
 echo "🧹 Cleaning up existing processes..."
 pkill -f "react-scripts" 2>/dev/null || true
 pkill -f "node.*server.js" 2>/dev/null || true
-lsof -ti:3000,3001,3002,5001 | xargs kill -9 2>/dev/null || true
+lsof -ti:3000,3001,5001 | xargs kill -9 2>/dev/null || true
 
 # Install dependencies if needed
 install_if_needed() {
@@ -48,10 +48,10 @@ cd ..
 
 sleep 2
 
-# Start frontend on port 3002 to avoid conflicts
+# Start frontend on default port 3000
 echo "🛒 Starting frontend..."
 cd frontend
-PORT=3002 npm start &
+npm start &
 FRONTEND_PID=$!
 cd ..
 
@@ -67,7 +67,7 @@ cd ..
 echo ""
 echo "✅ All services starting..."
 echo "🔧 Backend:   http://localhost:5001"
-echo "🛒 Frontend:  http://localhost:3002"
+echo "🛒 Frontend:  http://localhost:3000"
 echo "📊 Dashboard: http://localhost:3001"
 echo ""
 echo "💡 Services will auto-reload on file changes"

@@ -15,12 +15,12 @@ wget https://raw.githubusercontent.com/collinskramp/ecommerce/main/deploy-ubuntu
 ## 📊 Application URLs
 
 ### Production (Ubuntu)
-- **Frontend (Customer):** `http://your-server:3002`
+- **Frontend (Customer):** `http://your-server:3000`
 - **Dashboard (Admin):** `http://your-server:3001`
 - **Backend API:** `http://your-server:5001`
 
 ### Development (Local)
-- **Frontend (Customer):** `http://localhost:3002`
+- **Frontend (Customer):** `http://localhost:3000`
 - **Dashboard (Admin):** `http://localhost:3001`
 - **Backend API:** `http://localhost:5001`
 
@@ -40,7 +40,7 @@ wget https://raw.githubusercontent.com/collinskramp/ecommerce/main/deploy-ubuntu
 
 ## 🛠️ Technical Stack
 
-- **Frontend:** React.js (Port 3002)
+- **Frontend:** React.js (Port 3000)
 - **Dashboard:** React.js (Port 3001)
 - **Backend:** Node.js/Express (Port 5001)
 - **Database:** MongoDB
@@ -69,7 +69,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ## 🔧 Troubleshooting
 
 ### Port Conflicts
-The deployment script automatically uses port 3002 for the frontend to avoid common port conflicts on port 3000.
+The frontend runs on the standard React development port 3000. If you have port conflicts, you can modify the PORT environment variable in the deployment scripts.
 
 ### Node.js Dependency Conflicts (Ubuntu 22.04+)
 If you encounter Node.js or MongoDB dependency issues:
@@ -115,7 +115,7 @@ node populate_database.js
 
 For external access, configure your firewall:
 ```bash
-sudo ufw allow 3002  # Frontend
+sudo ufw allow 3000  # Frontend
 sudo ufw allow 3001  # Dashboard
 sudo ufw allow 5001  # Backend API
 ```

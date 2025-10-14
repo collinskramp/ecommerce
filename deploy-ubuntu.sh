@@ -186,12 +186,12 @@ deployment_troubleshooting() {
         print_warning "Backend (5001): FAILED"
     fi
     
-    if curl -s --connect-timeout 5 http://localhost:3002 > /dev/null 2>&1; then
-        frontend_ok=true
-        print_success "Frontend (3002): OK"
-    elif curl -s --connect-timeout 5 http://localhost:3000 > /dev/null 2>&1; then
+    if curl -s --connect-timeout 5 http://localhost:3000 > /dev/null 2>&1; then
         frontend_ok=true
         print_success "Frontend (3000): OK"
+    elif curl -s --connect-timeout 5 http://localhost:3002 > /dev/null 2>&1; then
+        frontend_ok=true
+        print_success "Frontend (3002): OK"
     else
         print_warning "Frontend: FAILED"
     fi
@@ -479,7 +479,7 @@ module.exports = {
       script: 'node_modules/.bin/react-scripts',
       args: 'start',
       env: {
-        PORT: 3002,
+        PORT: 3000,
         BROWSER: 'none',
         CI: 'true',
         HOST: '0.0.0.0',
@@ -612,7 +612,7 @@ configure_firewall() {
     
     # Configure firewall rules
     sudo ufw allow 22    # SSH
-    sudo ufw allow 3002  # Frontend (changed from 3000 to avoid conflicts)
+    sudo ufw allow 3000  # Frontend (React development server)
     sudo ufw allow 3001  # Dashboard
     sudo ufw allow 5001  # Backend API
     
@@ -688,19 +688,19 @@ show_status() {
     local public_ip=$(curl -s ifconfig.me 2>/dev/null || curl -s ipinfo.io/ip 2>/dev/null || echo "Unable to get public IP")
     
     print_status "Application URLs:"
-    echo "🛒 Frontend (Customer):  http://localhost:3002"
+    echo "🛒 Frontend (Customer):  http://localhost:3000"
     echo "📊 Dashboard (Admin):    http://localhost:3001"
     echo "🔧 Backend API:          http://localhost:5001"
     
     if [ "$public_ip" != "Unable to get public IP" ]; then
         echo ""
         print_status "External Access URLs:"
-        echo "🌍 Frontend:  http://$public_ip:3002"
+        echo "🌍 Frontend:  http://$public_ip:3000"
         echo "🌍 Dashboard: http://$public_ip:3001"
         echo "🌍 Backend:   http://$public_ip:5001"
         echo ""
         print_warning "For external access, configure firewall:"
-        echo "sudo ufw allow 3002"
+        echo "sudo ufw allow 3000"
         echo "sudo ufw allow 3001"
         echo "sudo ufw allow 5001"
     fi
