@@ -80,11 +80,23 @@ class cardController{
         }        
       } // end for
       let p = []
-      let unique = [...new Set(stockProduct.map(p => p.products[0].sellerId.toString()))] 
+      
+      // Filter out products with missing sellerId and add safety check
+      const validStockProducts = stockProduct.filter(p => 
+        p.products && 
+        p.products[0] && 
+        p.products[0].sellerId
+      );
+      
+      if (validStockProducts.length === 0) {
+        return responseReturn(res, 200, { card_products: [], price: 0, card_product_count: 0, shipping_fee: 0, outOfStockProduct: [] });
+      }
+      
+      let unique = [...new Set(validStockProducts.map(p => p.products[0].sellerId.toString()))] 
       for (let i = 0; i < unique.length; i++) {
         let price = 0;
-        for (let j = 0; j < stockProduct.length; j++) {
-           const tempProduct = stockProduct[j].products[0]
+        for (let j = 0; j < validStockProducts.length; j++) {
+           const tempProduct = validStockProducts[j].products[0]
            if (unique[i] === tempProduct.sellerId.toString()) {
                 let pri = 0;
                 if (tempProduct.discount !== 0) {
