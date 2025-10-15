@@ -6,13 +6,7 @@ module.exports = {
       script: 'server.js',
       env: {
         NODE_ENV: 'production',
-        PORT: 5001,
-        DB_URL: 'mongodb://admin:password@127.0.0.1:27017/ec?authSource=admin',
-        SECRET: 'your_jwt_secret_here',
-        cloud_name: 'your_cloudinary_cloud_name',
-        api_key: 'your_cloudinary_api_key',
-        api_secret: 'your_cloudinary_api_secret',
-        STRIPE_SECRET_KEY: 'your_stripe_secret_key_here'
+        PORT: 5001
       },
       instances: 1,
       autorestart: true,
