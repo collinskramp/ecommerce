@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './../components/Header';
 import Footer from './../components/Footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Stripe from '../components/Stripe';
 
 const Payment = () => {
 
-    const { state: {price,items,orderId}} = useLocation()
+    const location = useLocation()
+    const navigate = useNavigate()
     const [paymentMethod, setPaymentMethod] = useState('stripe')
+
+    // Safety check: redirect if no payment data
+    useEffect(() => {
+        if (!location.state || !location.state.price) {
+            navigate('/card')
+        }
+    }, [location.state, navigate])
+
+    // Return loading state if no data to prevent errors
+    if (!location.state || !location.state.price) {
+        return (
+            <div>
+                <Header />
+                <div className="flex justify-center items-center h-screen">
+                    <p>Redirecting to cart...</p>
+                </div>
+                <Footer />
+            </div>
+        )
+    }
+
+    const { price, items, orderId } = location.state
 
 
     return (

@@ -33,7 +33,7 @@ const Details = () => {
 
     useEffect(() => {
         dispatch(product_details(slug))
-    },[slug])
+    },[slug, dispatch])
 
     useEffect(() => { 
         if (successMessage) {
@@ -45,12 +45,9 @@ const Details = () => {
             dispatch(messageClear())  
         } 
         
-    },[successMessage,errorMessage])
+    },[successMessage, errorMessage, dispatch])
 
-    const images = [1,2,3,4,5,6]
     const [image, setImage] = useState('')
-    const discount = 10
-    const stock = 3
     const [state, setState] = useState('reviews')
 
     const responsive = {
@@ -290,16 +287,16 @@ const Details = () => {
 
     <ul className='flex justify-start items-center gap-3'>
         <li>
-            <a className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-indigo-500 rounded-full text-white' href="#"> <FaFacebookF /> </a>
+            <button type="button" className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-indigo-500 rounded-full text-white cursor-pointer'> <FaFacebookF /> </button>
         </li>
         <li>
-            <a className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-cyan-500 rounded-full text-white' href="#"> <FaTwitter /> </a>
+            <button type="button" className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-cyan-500 rounded-full text-white cursor-pointer'> <FaTwitter /> </button>
         </li>
         <li>
-            <a className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-purple-500 rounded-full text-white' href="#"> <FaLinkedin /> </a>
+            <button type="button" className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-purple-500 rounded-full text-white cursor-pointer'> <FaLinkedin /> </button>
         </li>
         <li>
-            <a className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-blue-500 rounded-full text-white' href="#"> <FaGithub /> </a>
+            <button type="button" className='w-[38px] h-[38px] hover:bg-[#059473] hover:text-white flex justify-center items-center bg-blue-500 rounded-full text-white cursor-pointer'> <FaGithub /> </button>
         </li>
     </ul> 
 
@@ -352,7 +349,7 @@ const Details = () => {
         {
             moreProducts.map((p,i) => {
                 return (
-        <Link className='block'>
+        <Link key={i} to={`/product/details/${p.slug}`} className='block'>
             <div className='relative h-[270px]'>
             <img className='w-full h-full' src={ p.images[0]} alt="" /> 
             {
@@ -412,7 +409,7 @@ const Details = () => {
             return (
 
                 <SwiperSlide key={i}>
-                    <Link className='block'>
+                    <Link to={`/product/details/${p.slug}`} className='block'>
                         <div className='relative h-[270px]'>
                             <div className='w-full h-full'>
                     <img className='w-full h-full' src={p.images[0] } alt="" />

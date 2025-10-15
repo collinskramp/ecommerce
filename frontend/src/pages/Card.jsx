@@ -17,7 +17,7 @@ const Card = () => {
 
     useEffect(() => {
         dispatch(get_card_products(userInfo.id))
-    },[])
+    },[dispatch, userInfo.id])
 
     const redirect = () => {
         navigate('/shipping',{
@@ -37,7 +37,7 @@ const Card = () => {
             dispatch(get_card_products(userInfo.id))
         } 
         
-    },[successMessage])
+    },[successMessage, dispatch, userInfo.id])
 
     const inc = (quantity, stock, card_id) => {
         const temp = quantity + 1;
@@ -86,13 +86,13 @@ const Card = () => {
                             </div>
 
                 {
-                   card_products.map((p,i) => <div className='flex bg-white p-4 flex-col gap-2'>
+                   card_products.map((p,i) => <div key={i} className='flex bg-white p-4 flex-col gap-2'>
                    <div className='flex justify-start items-center'>
                  <h2 className='text-md text-slate-600 font-bold'>{p.shopName}</h2>
                    </div>
 
                    {
-                       p.products.map((pt,i) => <div className='w-full flex flex-wrap'>
+                       p.products.map((pt,j) => <div key={j} className='w-full flex flex-wrap'>
                        <div className='flex sm:w-full gap-2 w-7/12'>
                            <div className='flex gap-2 justify-start items-center'>
                        <img className='w-[80px] h-[80px]' src={pt.productInfo.images[0]} alt="" />
@@ -134,7 +134,7 @@ const Card = () => {
 
                   <div className='bg-white p-4'>
                   {
-                       outofstock_products.map((p,i) => <div className='w-full flex flex-wrap'>
+                       outofstock_products.map((p,i) => <div key={i} className='w-full flex flex-wrap'>
                        <div className='flex sm:w-full gap-2 w-7/12'>
                            <div className='flex gap-2 justify-start items-center'>
                        <img className='w-[80px] h-[80px]' src={ p.products[0].images[0] } alt="" />

@@ -154,42 +154,58 @@ export const homeReducer = createSlice({
     extraReducers: (builder) => {
         builder
         .addCase(get_category.fulfilled, (state, { payload }) => {
-            state.categorys = payload.categorys;
+            if (payload && payload.categorys) {
+                state.categorys = payload.categorys;
+            }
         })
         .addCase(get_products.fulfilled, (state, { payload }) => {
-            state.products = payload.products;
-            state.latest_product = payload.latest_product;
-            state.topRated_product = payload.topRated_product;
-            state.discount_product = payload.discount_product;
+            if (payload) {
+                state.products = payload.products || [];
+                state.latest_product = payload.latest_product || [];
+                state.topRated_product = payload.topRated_product || [];
+                state.discount_product = payload.discount_product || [];
+            }
         })
         .addCase(price_range_product.fulfilled, (state, { payload }) => { 
-            state.latest_product = payload.latest_product;
-            state.priceRange = payload.priceRange; 
+            if (payload) {
+                state.latest_product = payload.latest_product || [];
+                state.priceRange = payload.priceRange || { low: 0, high: 10000 }; 
+            }
         })
         .addCase(query_products.fulfilled, (state, { payload }) => { 
-            state.products = payload.products;
-            state.totalProduct = payload.totalProduct;
-            state.parPage = payload.parPage; 
+            if (payload) {
+                state.products = payload.products || [];
+                state.totalProduct = payload.totalProduct || 0;
+                state.parPage = payload.parPage || 3; 
+            }
         })
 
         .addCase(product_details.fulfilled, (state, { payload }) => { 
-            state.product = payload.product;
-            state.relatedProducts = payload.relatedProducts;
-            state.moreProducts = payload.moreProducts; 
+            if (payload) {
+                state.product = payload.product || {};
+                state.relatedProducts = payload.relatedProducts || [];
+                state.moreProducts = payload.moreProducts || []; 
+            }
         })
 
         .addCase(customer_review.fulfilled, (state, { payload }) => {
-            state.successMessage = payload.message;
+            if (payload && payload.message) {
+                state.successMessage = payload.message;
+            }
         })
 
         .addCase(get_reviews.fulfilled, (state, { payload }) => {
-            state.reviews = payload.reviews;
-            state.totalReview = payload.totalReview;
-            state.rating_review = payload.rating_review;
+            if (payload) {
+                state.reviews = payload.reviews || [];
+                state.totalReview = payload.totalReview || 0;
+                state.rating_review = payload.rating_review || [];
+            }
         })
 
         .addCase(get_banners.fulfilled, (state, { payload }) => {
-            state.banners = payload.banners; 
+            if (payload && payload.banners) {
+                state.banners = payload.banners; 
+            }
         })
 
     }

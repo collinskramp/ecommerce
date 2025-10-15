@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { place_order } from '../store/reducers/orderReducer';
 
 const Shipping = () => {
 
-    const { state: {products,price,shipping_fee,items }} = useLocation()
+    const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {userInfo} = useSelector(state => state.auth) 
@@ -23,6 +23,28 @@ const Shipping = () => {
         city: '',
         area: ''
     })
+
+    // Safety check: redirect if no cart data
+    useEffect(() => {
+        if (!location.state || !location.state.products) {
+            navigate('/card')
+        }
+    }, [location.state, navigate])
+
+    // Return loading state if no data to prevent errors
+    if (!location.state || !location.state.products) {
+        return (
+            <div>
+                <Header />
+                <div className="flex justify-center items-center h-screen">
+                    <p>Redirecting to cart...</p>
+                </div>
+                <Footer />
+            </div>
+        )
+    }
+
+    const { products, price, shipping_fee, items } = location.state
 
     const inputHandle = (e) => {
         setState({

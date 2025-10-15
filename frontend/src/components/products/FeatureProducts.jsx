@@ -36,7 +36,7 @@ const FeatureProducts = ({products}) => {
             dispatch(messageClear())  
         } 
         
-    },[successMessage,errorMessage])
+    },[successMessage, errorMessage, dispatch])
 
 
     const add_wishlist = (pro) => {
@@ -68,12 +68,14 @@ const FeatureProducts = ({products}) => {
             <div className='relative overflow-hidden'>
             
         {
-            p.discount ? <div className='flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2'>{p.discount}% </div> : ''
+            p.discount ? <div className='flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2 z-10'>{p.discount}% </div> : ''
         }
 
-        <img className='sm:w-full w-full h-[240px]' src={p.images[0]} alt="" />  
+        <Link to={`/product/details/${p.slug}`}>
+            <img className='sm:w-full w-full h-[240px] cursor-pointer' src={p.images[0]} alt={p.name} />
+        </Link>
 
-        <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
+        <ul className='flex transition-all duration-500 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3 z-20'>
             <li onClick={() => add_wishlist(p)} className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all'>
             <FaRegHeart />
             </li>
@@ -87,7 +89,9 @@ const FeatureProducts = ({products}) => {
             </div>
 
         <div className='py-3 text-slate-600 px-2'>
-            <h2 className='font-bold'>{p.name} </h2>
+            <Link to={`/product/details/${p.slug}`}>
+                <h2 className='font-bold hover:text-[#059473] transition-all'>{p.name} </h2>
+            </Link>
             <div className='flex justify-start items-center gap-3'>
                 <span className='text-md font-semibold'>${p.price}</span>
                 <div className='flex'>
