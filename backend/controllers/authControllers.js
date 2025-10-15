@@ -105,6 +105,7 @@ class authControllers{
                responseReturn(res,201,{token,message: 'Register Success'})
             }
          } catch (error) {
+            console.error('Seller registration error:', error)
             responseReturn(res,500,{error: 'Internal Server Error'})
          }
     }
